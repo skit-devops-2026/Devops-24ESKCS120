@@ -1,15 +1,15 @@
-// ============================================================
-// tasks.js - Tasks page logic
-// Provides full CRUD for tasks (create, read, update, delete),
-// plus search and filtering by status and priority.
-// Also loads the project dropdown for the task form.
-// ============================================================
 
-// Load all tasks and render the table.
+
+
+
+
+
+
+
 function loadTasks() {
     const tasks = getTasks();
 
-    // Get the search term and filter values
+    
     const searchInput = document.getElementById("taskSearch");
     const statusFilter = document.getElementById("statusFilter");
     const priorityFilter = document.getElementById("priorityFilter");
@@ -18,11 +18,11 @@ function loadTasks() {
     const selectedStatus = statusFilter ? statusFilter.value : "";
     const selectedPriority = priorityFilter ? priorityFilter.value : "";
 
-    // Apply search + filters to the full task list.
-    // Each filter() keeps only matching tasks.
+    
+    
     let filteredTasks = tasks;
 
-    // Filter by search text (title or assignee)
+    
     if (searchTerm) {
         filteredTasks = filteredTasks.filter(function(task) {
             return task.title.toLowerCase().includes(searchTerm) ||
@@ -30,14 +30,14 @@ function loadTasks() {
         });
     }
 
-    // Filter by the selected status
+    
     if (selectedStatus) {
         filteredTasks = filteredTasks.filter(function(task) {
             return task.status === selectedStatus;
         });
     }
 
-    // Filter by the selected priority
+    
     if (selectedPriority) {
         filteredTasks = filteredTasks.filter(function(task) {
             return task.priority === selectedPriority;
@@ -47,13 +47,13 @@ function loadTasks() {
     renderTasks(filteredTasks);
 }
 
-// Fill the project dropdown in the task modal.
+
 function loadProjectDropdown() {
     const projects = getProjects();
     const select = document.getElementById("taskProject");
     select.innerHTML = "";
 
-    // Create one option element for each project
+    
     projects.forEach(function(project) {
         const option = document.createElement("option");
         option.value = project.id;
@@ -62,18 +62,18 @@ function loadProjectDropdown() {
     });
 }
 
-// Render the task table with the given filtered tasks.
+
 function renderTasks(tasks) {
     const container = document.getElementById("taskListContainer");
     container.innerHTML = "";
 
-    // Show an empty state if no tasks match
+    
     if (tasks.length === 0) {
         container.innerHTML = '<div class="empty-state"><p>No tasks found.</p></div>';
         return;
     }
 
-    // Build the table structure
+    
     const table = document.createElement("table");
     table.className = "task-table";
     table.innerHTML =
@@ -92,9 +92,9 @@ function renderTasks(tasks) {
 
     const tbody = table.querySelector("tbody");
 
-    // Loop through each task and create a table row
+    
     tasks.forEach(function(task) {
-        // Find the project name for this task
+        
         const project = getProjectById(task.projectId);
         const projectName = project ? project.name : "Unknown";
 
@@ -119,18 +119,18 @@ function renderTasks(tasks) {
     container.appendChild(table);
 }
 
-// Open the modal pre-filled with the selected task's data.
+
 function editTask(taskId) {
     const tasks = getTasks();
     const task = tasks.find(function(t) { return t.id === taskId; });
 
     if (!task) return;
 
-    // Set the modal title to "Edit Task"
+    
     document.getElementById("taskModalTitle").textContent = "Edit Task";
     document.getElementById("editingTaskId").value = task.id;
 
-    // Fill all form fields with the task's current data
+    
     document.getElementById("taskTitle").value = task.title;
     document.getElementById("taskDesc").value = task.description || "";
     document.getElementById("taskProject").value = task.projectId;
@@ -139,36 +139,36 @@ function editTask(taskId) {
     document.getElementById("taskAssignee").value = task.assignee || "";
     document.getElementById("taskDueDate").value = task.dueDate || "";
 
-    // Show the modal
+    
     document.getElementById("taskModal").classList.add("show");
 }
 
-// Delete a task after confirmation.
+
 function deleteTask(taskId) {
     const confirmDelete = confirm("Are you sure you want to delete this task?");
     if (!confirmDelete) return;
 
-    // Keep only tasks that do NOT have the matching ID, then save
+    
     let tasks = getTasks();
     tasks = tasks.filter(function(task) {
         return task.id !== taskId;
     });
     saveTasks(tasks);
 
-    // Refresh the table
+    
     loadTasks();
 }
 
-// --- Modal Logic ---
+
 
 const modalOverlay = document.getElementById("taskModal");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const cancelTaskBtn = document.getElementById("cancelTaskBtn");
 
-// Show the modal in "Add" mode when "Add Task" is clicked
+
 if (addTaskBtn) {
     addTaskBtn.addEventListener("click", function() {
-        // Reset the form to default values
+        
         document.getElementById("taskModalTitle").textContent = "Add New Task";
         document.getElementById("editingTaskId").value = "";
         document.getElementById("taskTitle").value = "";
@@ -182,21 +182,21 @@ if (addTaskBtn) {
     });
 }
 
-// Hide the modal when "Cancel" is clicked
+
 if (cancelTaskBtn) {
     cancelTaskBtn.addEventListener("click", function() {
         modalOverlay.classList.remove("show");
     });
 }
 
-// Handle form submission (used for both Add and Edit)
+
 const taskForm = document.getElementById("taskForm");
 if (taskForm) {
     taskForm.addEventListener("submit", function(event) {
-        // Prevent the page from reloading
+        
         event.preventDefault();
 
-        // Read all the form values
+        
         const title = document.getElementById("taskTitle").value.trim();
         const description = document.getElementById("taskDesc").value.trim();
         const projectId = parseInt(document.getElementById("taskProject").value);
@@ -205,22 +205,22 @@ if (taskForm) {
         const assignee = document.getElementById("taskAssignee").value.trim();
         const dueDate = document.getElementById("taskDueDate").value;
 
-        // Simple validation: a task must have a title
+        
         if (!title) {
             alert("Please enter a task title.");
             return;
         }
 
-        // Check which mode we are in using the hidden field
+        
         const editingId = document.getElementById("editingTaskId").value;
 
-        // If editingId has a value, we are editing an existing task
+        
         if (editingId) {
             const tasks = getTasks();
             const taskIndex = tasks.findIndex(function(t) { return t.id === parseInt(editingId); });
 
             if (taskIndex !== -1) {
-                // Update the existing task with the new values
+                
                 tasks[taskIndex].title = title;
                 tasks[taskIndex].description = description;
                 tasks[taskIndex].projectId = projectId;
@@ -231,7 +231,7 @@ if (taskForm) {
                 saveTasks(tasks);
             }
         } else {
-            // Otherwise we are creating a brand new task
+            
             const newTask = {
                 id: getNextTaskId(),
                 title: title,
@@ -248,13 +248,13 @@ if (taskForm) {
             saveTasks(tasks);
         }
 
-        // Close the modal and refresh the task list
+        
         modalOverlay.classList.remove("show");
         loadTasks();
     });
 }
 
-// --- Live search and filter events ---
+
 
 const searchInput = document.getElementById("taskSearch");
 if (searchInput) {
@@ -271,6 +271,6 @@ if (priorityFilter) {
     priorityFilter.addEventListener("change", loadTasks);
 }
 
-// Load the project dropdown and tasks when the page opens
+
 loadProjectDropdown();
 loadTasks();

@@ -1,10 +1,3 @@
-// ============================================================
-// data.js - Default sample data for TaskFlow
-// This file provides initial data when the app is opened
-// for the first time (no data in LocalStorage yet).
-// ============================================================
-
-// Sample projects that appear on first load
 const defaultProjects = [
     {
         id: 1,
@@ -38,7 +31,7 @@ const defaultProjects = [
     }
 ];
 
-// Sample tasks that appear on first load
+
 const defaultTasks = [
     {
         id: 1,
@@ -162,7 +155,7 @@ const defaultTasks = [
     }
 ];
 
-// Sample team members displayed on the team page
+
 const defaultTeam = [
     {
         id: 1,

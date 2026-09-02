@@ -1,38 +1,38 @@
-// ============================================================
-// project-details.js - Project details page logic
-// Reads the project ID from the URL (?id=...), finds the
-// project from LocalStorage, and displays it along with
-// its tasks. Also supports adding tasks to this project.
-// ============================================================
 
-// Get the project ID from the URL query parameter (?id=5)
-// window.location.search returns the part of the URL after "?"
+
+
+
+
+
+
+
+
 const urlParams = new URLSearchParams(window.location.search);
 const projectId = parseInt(urlParams.get("id"));
 
-// Variable to hold the current project after loading
+
 let currentProject = null;
 
-// Load and display the project details page.
+
 function loadProjectDetails() {
-    // Find the project using the ID from the URL
+    
     currentProject = getProjectById(projectId);
 
     const header = document.getElementById("projectHeader");
 
-    // If the project is not found, show an error message
+    
     if (!currentProject) {
         header.innerHTML = '<h1>Project not found.</h1>';
         return;
     }
 
-    // Count tasks for this project
+    
     const tasks = getTasks();
     const projectTasks = tasks.filter(function(task) {
         return task.projectId === currentProject.id;
     });
 
-    // Calculate progress percentage
+    
     let progress = 0;
     if (projectTasks.length > 0) {
         const doneCount = projectTasks.filter(function(task) {
@@ -41,7 +41,7 @@ function loadProjectDetails() {
         progress = Math.round((doneCount / projectTasks.length) * 100);
     }
 
-    // Display the project information
+    
     header.innerHTML =
         '<h1>' + currentProject.name + '</h1>' +
         '<p>' + currentProject.description + '</p>' +
@@ -52,22 +52,22 @@ function loadProjectDetails() {
         '</div>' +
         '<div class="progress-bar"><div class="progress-bar-fill" style="width: ' + progress + '%;"></div></div>';
 
-    // Display the tasks belonging to this project
+    
     renderProjectTasks(projectTasks);
 }
 
-// Render the list of tasks for this project.
+
 function renderProjectTasks(projectTasks) {
     const container = document.getElementById("projectTasks");
     container.innerHTML = "";
 
-    // Show empty state if no tasks exist for this project
+    
     if (projectTasks.length === 0) {
         container.innerHTML = '<div class="empty-state"><p>No tasks for this project yet.</p></div>';
         return;
     }
 
-    // Create a table for the tasks
+    
     const table = document.createElement("table");
     table.className = "task-table";
     table.innerHTML =
@@ -85,7 +85,7 @@ function renderProjectTasks(projectTasks) {
 
     const tbody = table.querySelector("tbody");
 
-    // Loop through each task and add a row
+    
     projectTasks.forEach(function(task) {
         const row = document.createElement("tr");
         row.innerHTML =
@@ -106,34 +106,34 @@ function renderProjectTasks(projectTasks) {
     container.appendChild(table);
 }
 
-// Delete a task by ID from this project, then refresh using URL.
+
 function deleteTask(taskId) {
     const confirmDelete = confirm("Are you sure you want to delete this task?");
     if (!confirmDelete) return;
 
-    // Remove the task with the matching ID and save back
+    
     let tasks = getTasks();
     tasks = tasks.filter(function(task) {
         return task.id !== taskId;
     });
     saveTasks(tasks);
 
-    // Refresh the page content
+    
     loadProjectDetails();
 }
 
-// --- Add Task Modal Logic ---
+
 
 const modalOverlay = document.getElementById("taskModal");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const cancelTaskBtn = document.getElementById("cancelTaskBtn");
 
-// Show the task modal when "Add Task" is clicked
+
 if (addTaskBtn) {
     addTaskBtn.addEventListener("click", function() {
         modalOverlay.classList.add("show");
 
-        // Clear the form fields
+        
         document.getElementById("taskTitle").value = "";
         document.getElementById("taskDesc").value = "";
         document.getElementById("taskPriority").value = "Medium";
@@ -143,18 +143,18 @@ if (addTaskBtn) {
     });
 }
 
-// Hide the modal when "Cancel" is clicked
+
 if (cancelTaskBtn) {
     cancelTaskBtn.addEventListener("click", function() {
         modalOverlay.classList.remove("show");
     });
 }
 
-// Handle the task form submission
+
 const taskForm = document.getElementById("taskForm");
 if (taskForm) {
     taskForm.addEventListener("submit", function(event) {
-        // Prevent the page from reloading
+        
         event.preventDefault();
 
         const title = document.getElementById("taskTitle").value.trim();
@@ -164,13 +164,13 @@ if (taskForm) {
         const assignee = document.getElementById("taskAssignee").value.trim();
         const dueDate = document.getElementById("taskDueDate").value;
 
-        // Simple validation
+        
         if (!title) {
             alert("Please enter a task title.");
             return;
         }
 
-        // Create a new task object with the current project ID
+        
         const newTask = {
             id: getNextTaskId(),
             title: title,
@@ -182,16 +182,16 @@ if (taskForm) {
             dueDate: dueDate
         };
 
-        // Add it to the task list and save to LocalStorage
+        
         const tasks = getTasks();
         tasks.push(newTask);
         saveTasks(tasks);
 
-        // Hide modal and refresh the page
+        
         modalOverlay.classList.remove("show");
         loadProjectDetails();
     });
 }
 
-// Load the page when the script runs
+
 loadProjectDetails();

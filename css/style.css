@@ -1,0 +1,979 @@
+/* ============================================================
+   style.css - Complete stylesheet for TaskFlow
+   All styling for all pages lives in this single file.
+   Uses Flexbox and Grid for layouts.
+   Color palette:
+     Primary blue   -> #2563eb
+     Background     -> #f1f5f9
+     Text dark      -> #1e293b
+     Text muted     -> #64748b
+     Navbar         -> white
+     Footer         -> dark navy (#0f172a)
+   ============================================================ */
+
+/* ---------- Reset and Base ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f1f5f9;
+    color: #334155;
+    line-height: 1.6;
+    /* Flex column keeps the footer at the bottom of the viewport */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    font-family: inherit;
+    font-size: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 10px 12px;
+    outline: none;
+    width: 100%;
+    background-color: #fff;
+    color: #334155;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #2563eb;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ---------- Top Navigation Bar ---------- */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background-color: #fff;
+    padding: 0 32px;
+    height: 64px;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    /* Sticky keeps the navbar visible when scrolling */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-brand h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.navbar-brand p {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: -2px;
+}
+
+.navbar-nav {
+    display: flex;
+    gap: 4px;
+}
+
+.navbar-nav a {
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.navbar-nav a:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+.navbar-nav a.active {
+    background-color: #eff6ff;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: none;
+    color: #64748b;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.logout-btn:hover {
+    color: #ef4444;
+    background-color: #fef2f2;
+}
+
+/* ---------- Main Content ---------- */
+.main-content {
+    flex: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+/* ---------- Footer ---------- */
+.app-footer {
+    background-color: #0f172a;
+    color: #94a3b8;
+    text-align: center;
+    padding: 28px 32px;
+    font-size: 14px;
+    margin-top: 48px;
+}
+
+.app-footer .footer-brand {
+    color: #60a5fa;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.app-footer p {
+    margin: 4px 0;
+}
+
+.app-footer .footer-copy {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ---------- Page Header ---------- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.page-header p {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+.btn:hover {
+    opacity: 0.85;
+}
+
+.btn-primary {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: #fff;
+}
+
+.btn-success {
+    background-color: #22c55e;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+/* ---------- Statistics Cards (Dashboard) ---------- */
+/* Grid is used here because the cards naturally form rows and columns */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-top: 4px solid #2563eb;
+}
+
+.stat-card .stat-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+}
+
+.stat-card .stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.stat-card .stat-label {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* ---------- Project Cards Grid ---------- */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.project-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    border-top: 4px solid #2563eb;
+}
+
+.project-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.project-card p {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.project-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.project-card-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ---------- Status Badges ---------- */
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-active,
+.badge-done {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+.badge-completed {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+.badge-on-hold {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.badge-todo {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+
+.badge-in-progress {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.badge-high {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.badge-medium {
+    background-color: #fef3c7;
+    color: #d97706;
+}
+
+.badge-low {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+
+/* ---------- Progress Bar ---------- */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #2563eb;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+/* ---------- Search and Filter Bar ---------- */
+.toolbar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.toolbar input[type="text"],
+.toolbar select {
+    width: auto;
+    min-width: 200px;
+}
+
+.toolbar select {
+    width: auto;
+    min-width: 160px;
+}
+
+/* ---------- Task Table ---------- */
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.task-table th {
+    background-color: #f8fafc;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.task-table td {
+    padding: 14px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+.task-table tr:last-child td {
+    border-bottom: none;
+}
+
+.task-table tr:hover td {
+    background-color: #f8fafc;
+}
+
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* ---------- Kanban Board ---------- */
+.board-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.board-column {
+    background-color: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 400px;
+}
+
+.board-column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.board-column-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.board-column-count {
+    background-color: #e2e8f0;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+}
+
+.board-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    cursor: default;
+}
+
+.board-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.board-card p {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.board-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* ---------- Team Cards ---------- */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.team-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.team-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: #2563eb;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 auto 16px;
+}
+
+.team-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.team-card .team-role {
+    font-size: 14px;
+    color: #2563eb;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.team-card .team-email {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ---------- Settings Form ---------- */
+.settings-form {
+    max-width: 600px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+/* ---------- Modal ---------- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.5);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+}
+
+/* When the modal is open, we show it using this class */
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* ---------- Empty State ---------- */
+.empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: #94a3b8;
+}
+
+.empty-state p {
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+/* ---------- Project Detail Page ---------- */
+.project-detail-header {
+    margin-bottom: 32px;
+}
+
+.project-detail-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.project-detail-header p {
+    font-size: 15px;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.project-detail-meta {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.project-detail-meta span {
+    font-size: 14px;
+    color: #475569;
+}
+
+/* ---------- Welcome Section ---------- */
+.welcome-section {
+    margin-bottom: 32px;
+}
+
+.welcome-section h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.welcome-section p {
+    font-size: 15px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+/* ---------- Quick Actions ---------- */
+.quick-actions {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+/* ---------- Recent Items ---------- */
+/* Two-column layout used on the dashboard for recent lists */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.recent-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+}
+
+.recent-item-info h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.recent-item-info p {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ---------- Dark Theme ---------- */
+/* Applied by adding the .theme-dark class on <body> from settings.js */
+body.theme-dark {
+    background-color: #0f172a;
+    color: #e2e8f0;
+}
+
+body.theme-dark .navbar {
+    background-color: #1e293b;
+    border-bottom-color: #334155;
+}
+
+body.theme-dark .navbar-brand h2 {
+    color: #60a5fa;
+}
+
+body.theme-dark .navbar-brand p {
+    color: #64748b;
+}
+
+body.theme-dark .navbar-nav a {
+    color: #94a3b8;
+}
+
+body.theme-dark .navbar-nav a:hover {
+    background-color: #0f172a;
+    color: #fff;
+}
+
+body.theme-dark .navbar-nav a.active {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+body.theme-dark .logout-btn {
+    color: #94a3b8;
+}
+
+body.theme-dark .logout-btn:hover {
+    color: #f87171;
+    background-color: #0f172a;
+}
+
+body.theme-dark .app-footer {
+    background-color: #0b1220;
+    border-top: 1px solid #1e293b;
+}
+
+body.theme-dark .card {
+    background-color: #1e293b;
+    box-shadow: none;
+}
+
+body.theme-dark .stat-card,
+body.theme-dark .project-card,
+body.theme-dark .team-card {
+    background-color: #1e293b;
+    color: #e2e8f0;
+}
+
+body.theme-dark .stat-number,
+body.theme-dark .project-card h3,
+body.theme-dark .team-card h3,
+body.theme-dark .card-header h2,
+body.theme-dark .board-column-header h3 {
+    color: #f1f5f9;
+}
+
+body.theme-dark .stat-label,
+body.theme-dark .project-card p,
+body.theme-dark .team-card .team-email {
+    color: #94a3b8;
+}
+
+body.theme-dark .task-table {
+    background-color: #1e293b;
+}
+
+body.theme-dark .task-table th {
+    background-color: #0f172a;
+    color: #94a3b8;
+    border-bottom-color: #334155;
+}
+
+body.theme-dark .task-table td {
+    color: #e2e8f0;
+    border-bottom-color: #334155;
+}
+
+body.theme-dark .task-table tr:hover td {
+    background-color: #0f172a;
+}
+
+body.theme-dark .board-column {
+    background-color: #1e293b;
+}
+
+body.theme-dark .board-card {
+    background-color: #0f172a;
+}
+
+body.theme-dark .board-card p {
+    color: #94a3b8;
+}
+
+body.theme-dark .board-card h4 {
+    color: #f1f5f9;
+}
+
+body.theme-dark .recent-item {
+    background-color: #0f172a;
+}
+
+body.theme-dark .recent-item-info h4 {
+    color: #f1f5f9;
+}
+
+body.theme-dark .recent-item-info p {
+    color: #94a3b8;
+}
+
+body.theme-dark .modal {
+    background-color: #1e293b;
+}
+
+body.theme-dark .modal h2 {
+    color: #f1f5f9;
+}
+
+body.theme-dark input,
+body.theme-dark select,
+body.theme-dark textarea {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border-color: #334155;
+}
+
+body.theme-dark .project-detail-header h1,
+body.theme-dark .page-header h1,
+body.theme-dark .welcome-section h1 {
+    color: #f1f5f9;
+}
+
+body.theme-dark .project-detail-header p,
+body.theme-dark .page-header p,
+body.theme-dark .welcome-section p {
+    color: #94a3b8;
+}
+
+body.theme-dark .form-group label {
+    color: #cbd5e1;
+}
+
+body.theme-dark .toolbar input,
+body.theme-dark .toolbar select {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    border-color: #334155;
+}
+
+body.theme-dark .project-detail-meta span {
+    color: #cbd5e1;
+}
+
+body.theme-dark .team-card .team-role {
+    color: #60a5fa;
+}
+
+/* ---------- Responsive Design ---------- */
+/* On smaller screens the navbar wraps and content stacks */
+@media (max-width: 768px) {
+    .navbar {
+        height: auto;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .navbar-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .navbar-nav a {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .board-container {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .toolbar input[type="text"],
+    .toolbar select {
+        width: 100%;
+    }
+
+    .quick-actions {
+        flex-direction: column;
+    }
+
+    .two-column {
+        grid-template-columns: 1fr;
+    }
+
+    .task-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}

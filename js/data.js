@@ -25,13 +25,11 @@ const defaultProjects = [
     },
     {
         id: 5,
-        name: "TaskFlow Website",
+        name: "Durgesh Website",
         description: "Project management SaaS application built for college project submission.",
         status: "Active"
     }
 ];
-
-
 const defaultTasks = [
     {
         id: 1,
@@ -126,7 +124,7 @@ const defaultTasks = [
     {
         id: 10,
         title: "Create CSS styles",
-        description: "Design and implement all CSS for the taskflow project",
+        description: "Design and implement all CSS for the Durgesh project",
         projectId: 5,
         priority: "High",
         status: "In Progress",
@@ -160,35 +158,35 @@ const defaultTeam = [
     {
         id: 1,
         name: "Durgesh Kumar",
-        email: "durgesh@taskflow.com",
+        email: "durgesh@Durgesh.com",
         role: "Full Stack Developer",
         initial: "DK"
     },
     {
         id: 2,
         name: "Priya Sharma",
-        email: "priya@taskflow.com",
+        email: "priya@Durgesh.com",
         role: "UI/UX Designer",
         initial: "PS"
     },
     {
         id: 3,
         name: "Rahul Verma",
-        email: "rahul@taskflow.com",
+        email: "rahul@Durgesh.com",
         role: "Backend Developer",
         initial: "RV"
     },
     {
         id: 4,
         name: "Anita Singh",
-        email: "anita@taskflow.com",
+        email: "anita@Durgesh.com",
         role: "Project Manager",
         initial: "AS"
     },
     {
         id: 5,
         name: "Vikram Patel",
-        email: "vikram@taskflow.com",
+        email: "vikram@Durgesh.com",
         role: "QA Tester",
         initial: "VP"
     }

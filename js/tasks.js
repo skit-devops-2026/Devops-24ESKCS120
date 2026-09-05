@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 function loadTasks() {
     const tasks = getTasks();
 

@@ -73,7 +73,7 @@ function getSettings() {
     const data = localStorage.getItem("settings");
     return data ? JSON.parse(data) : {
         profileName: "Durgesh Kumar",
-        profileEmail: "durgesh@taskflow.com",
+        profileEmail: "durgesh@Durgesh.com",
         theme: "light"
     };
 }

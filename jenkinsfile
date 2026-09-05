@@ -1,0 +1,81 @@
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+        timeout(time: 15, unit: 'MINUTES')
+    }
+
+    environment {
+        IMAGE = "project-management-saas"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+
+                bat '''
+                    echo == Toolchain ==
+                    node --version
+                    npm --version
+                    git --version
+                '''
+            }
+        }
+
+        stage('Set Commit SHA') {
+            steps {
+                script {
+                    env.GIT_SHA = bat(
+                        script: '@git rev-parse --short HEAD',
+                        returnStdout: true
+                    ).trim()
+                }
+
+                echo "Building commit: ${env.GIT_SHA}"
+            }
+        }
+
+        stage('Install') {
+            steps {
+                bat 'make install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                bat 'make test'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat 'make build'
+            }
+        }
+
+        stage('Hygiene') {
+            steps {
+                bat 'bash scripts/hygiene.sh'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline finished successfully."
+            echo "Commit: ${env.GIT_SHA}"
+        }
+
+        failure {
+            echo "Pipeline FAILED. Check the stage logs."
+        }
+
+        always {
+            echo "Jenkins build completed."
+        }
+    }
+}

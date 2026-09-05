@@ -13,18 +13,16 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-
-                bat '''
-                    echo == Toolchain ==
-                    node --version
-                    npm --version
-                    git --version
-                '''
-            }
-        }
+      stage('Checkout') {
+    steps {
+        bat '''
+            echo == Toolchain ==
+            node --version
+            npm --version
+            git --version
+        '''
+    }
+}
 
         stage('Set Commit SHA') {
             steps {

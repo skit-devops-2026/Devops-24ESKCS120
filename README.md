@@ -21,5 +21,6 @@ Project Management SaaS is a web-based project management application designed t
 ```bash
 make install
 make run
+this is from the feature/add-tests
 
 this is from the feature/add-makefile branch

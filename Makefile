@@ -1,30 +1,31 @@
-# Every team fills in the commands for their own stack.
-# The CI pipeline calls these targets, so the names must not change.
-#
-# Examples:
-#   Node    install: npm ci          test: npm test        build: npm run build
-#   Python  install: pip install -r requirements.txt
-#                                    test: pytest          build: echo "no build step"
-#   Java    install: ./mvnw -B dependency:go-offline
-#                                    test: ./mvnw test     build: ./mvnw package
-
 .PHONY: install test build run docker-build docker-up
 
+# ---------------------------------------------------------------------------
+# Project: Project Management SaaS
+# Stack: HTML + CSS + Vanilla JavaScript
+# ---------------------------------------------------------------------------
+
 install:
-	@echo "TODO: install dependencies" && exit 1
+	@echo "Checking project dependencies..."
+	node --version
+	@echo "No external packages required - static frontend project."
+	@echo "Dependencies check passed."
 
 test:
-	@echo "TODO: run the test suite" && exit 1
+	@echo "Running project tests..."
+	node scripts/test.js
 
 build:
-	@echo "TODO: build the project" && exit 1
+	@echo "Building production application..."
+	node scripts/build.js
 
 run:
-	@echo "TODO: start the app locally" && exit 1
+	@echo "Starting Project Management SaaS..."
+	npx --yes http-server . -p 3000
 
 # Needed from M4 onwards
 docker-build:
-	@echo "TODO: docker build for frontend and backend" && exit 1
+	docker build --build-arg GIT_SHA=$$(git rev-parse --short HEAD) -t project-management-saas:latest .
 
 docker-up:
 	docker compose up --build

@@ -1,7 +1,4 @@
-# <Project Name>
-
-> Replace every angle-bracket placeholder below. The hygiene check in CI will
-> fail until you do.
+# Project Management SaaS
 
 ## Author
 
@@ -11,26 +8,18 @@
 
 ## About
 
-<Two or three sentences on what this application does.>
+Project Management SaaS is a web-based project management application designed to help users organize projects, manage tasks, track progress, and coordinate team activities from a centralized interface. The application provides dedicated views for the dashboard, projects, tasks, project board, team management, and settings.
 
 ## Tech stack
 
-- Frontend: <e.g. React>
-- Backend: <e.g. Node.js / Express>
-- Database: <e.g. PostgreSQL>
+- Frontend: HTML5, CSS3, JavaScript
+- Backend: None (frontend-only application)
+- Database: None (client-side storage)
 
 ## Running locally
 
 ```bash
 make install
 make run
-```
 
-## Live URL
-
-<Add once M5 is done. Until then, leave as is.>
-
-## Health endpoint
-
-`GET /health` returns the running commit SHA. See `Makefile` and the milestone
-sheet for why this is required.
+this is from the feature/ad-makefile

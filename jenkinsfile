@@ -57,11 +57,11 @@ pipeline {
             }
         }
 
-        stage('Hygiene') {
-            steps {
-                bat 'bash scripts/hygiene.sh'
-            }
-        }
+       stage('Hygiene') {
+    steps {
+        bat '"C:\\Program Files\\Git\\bin\\bash.exe" scripts/hygiene.sh'
+    }
+}
     }
 
     post {

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durgesh - Projects</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <div class="navbar-brand">
+            <h2>Durgesh</h2>
+            <p>Project Management</p>
+        </div>
+        <nav class="navbar-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="projects.html" class="active">Projects</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="board.html">Board</a>
+            <a href="team.html">Team</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+        <button class="logout-btn" onclick="alert('Logout is not implemented in this frontend demo.')">Logout</button>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1>Projects</h1>
+                    <p>Manage all your projects in one place</p>
+                </div>
+                <button class="btn btn-primary" id="addProjectBtn">+ Add Project</button>
+            </div>
+
+            <!-- Search bar for projects -->
+            <div class="toolbar">
+                <input type="text" id="projectSearch" placeholder="Search projects...">
+            </div>
+
+            <!-- Project cards are rendered here by projects.js -->
+            <div class="projects-grid" id="projectsGrid">
+            </div>
+        </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p class="footer-brand">Durgesh</p>
+        <p>Project Management SaaS - Frontend demo</p>
+        <p class="footer-copy">&copy; 2026 Durgesh. Built with HTML, CSS &amp; JavaScript.</p>
+    </footer>
+
+    <!-- Modal for adding a new project -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal">
+            <h2>Add New Project</h2>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label for="projectName">Project Name</label>
+                    <input type="text" id="projectName" placeholder="Enter project name" required>
+                </div>
+                <div class="form-group">
+                    <label for="projectDesc">Description</label>
+                    <textarea id="projectDesc" placeholder="Enter project description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="projectStatus">Status</label>
+                    <select id="projectStatus">
+                        <option value="Active">Active</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelProjectBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/projects.js"></script>
+</body>
+</html>

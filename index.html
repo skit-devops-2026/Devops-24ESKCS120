@@ -1,196 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-
-    <!-- Makes the website responsive on mobile devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Project Management SaaS</title>
-
-    <!-- Connects our CSS file with HTML -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-
-  <body>
-    <!--
-        <div> is a general-purpose container.
-        We use it when we need to group elements together.
-    -->
-    <div class="dashboard">
-      <!-- =========================
-             SIDEBAR
-             ========================= -->
-
-      <aside class="sidebar">
-        <!-- Website/project name -->
-        <h2 class="logo">TaskFlow</h2>
-
-        <!-- Navigation section -->
-        <nav class="navigation">
-          <!-- Each link represents a page/section -->
-          <a href="#" class="nav-link active"> Dashboard </a>
-
-          <a href="#" class="nav-link"> Projects </a>
-
-          <a href="#" class="nav-link"> Tasks </a>
-
-          <a href="#" class="nav-link"> Team </a>
-
-          <a href="#" class="nav-link"> Settings </a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durgesh - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-brand">
+            <h2>Durgesh</h2>
+            <p>Project Management</p>
+        </div>
+        <nav class="navbar-nav">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="projects.html">Projects</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="board.html">Board</a>
+            <a href="team.html">Team</a>
+            <a href="settings.html">Settings</a>
         </nav>
-      </aside>
+        <button class="logout-btn" onclick="alert('Logout is not implemented in this frontend')">Logout</button>
+    </header>
 
-      <!-- =========================
-             MAIN CONTENT
-             ========================= -->
+    <!-- Main Content Area -->
+    <main class="main-content">
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <h1>Dashboard</h1>
+                <p>Welcome back! Here is an overview of your projects and tasks.</p>
+            </div>
 
-      <main class="main-content">
-        <!-- Top section -->
-        <header class="topbar">
-          <div>
-            <h1>Dashboard</h1>
+            <!-- Statistics Cards - Numbers are calculated dynamically by dashboard.js -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">&#128196;</div>
+                    <div class="stat-number" id="totalProjects">0</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">&#128203;</div>
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">&#9989;</div>
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">Completed Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">&#9203;</div>
+                    <div class="stat-number" id="pendingTasks">0</div>
+                    <div class="stat-label">Pending Tasks</div>
+                </div>
+            </div>
 
-            <p class="subtitle">
-              Welcome back! Here's what's happening with your projects.
-            </p>
-          </div>
+            <!-- Quick Action -->
+            <div class="quick-actions">
+                <a href="projects.html" class="btn btn-primary">+ New Project</a>
+                <a href="tasks.html" class="btn btn-secondary">+ New Task</a>
+            </div>
 
-          <!-- Button for creating a project -->
-          <button class="new-project-button">+ New Project</button>
-        </header>
-
-        <!-- =========================
-                 STATISTICS
-                 ========================= -->
-
-        <section class="stats">
-          <!-- One statistic card -->
-          <div class="stat-card">
-            <p class="stat-title">Total Projects</p>
-
-            <h2 class="stat-number">12</h2>
-          </div>
-
-          <div class="stat-card">
-            <p class="stat-title">Active Tasks</p>
-
-            <h2 class="stat-number">28</h2>
-          </div>
-
-          <div class="stat-card">
-            <p class="stat-title">Completed</p>
-
-            <h2 class="stat-number">64</h2>
-          </div>
-
-          <div class="stat-card">
-            <p class="stat-title">Team Members</p>
-
-            <h2 class="stat-number">8</h2>
-          </div>
-        </section>
-
-        <!-- =========================
-                 PROJECTS
-                 ========================= -->
-
-        <section class="projects-section">
-          <div class="section-header">
-            <h2>Projects</h2>
-
-            <a href="#"> View All </a>
-          </div>
-
-          <div class="project-cards">
-            <!-- Project Card 1 -->
-            <div class="project-card">
-              <h3>Job Portal</h3>
-
-              <p>A platform where students can find jobs.</p>
-
-              <div class="progress-container">
-                <div class="progress-bar">
-                  <div class="progress"></div>
+            <!-- Two columns: Recent Projects and Recent Tasks -->
+            <div class="two-column">
+                <!-- Recent Projects -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Recent Projects</h2>
+                        <a href="projects.html" class="btn btn-sm btn-secondary">View All</a>
+                    </div>
+                    <div class="recent-list" id="recentProjects">
+                        <!-- Filled by dashboard.js -->
+                    </div>
                 </div>
 
-                <span>70%</span>
-              </div>
-            </div>
-
-            <!-- Project Card 2 -->
-            <div class="project-card">
-              <h3>Task Management</h3>
-
-              <p>Manage tasks and projects easily.</p>
-
-              <div class="progress-container">
-                <div class="progress-bar">
-                  <div class="progress progress-50"></div>
+                <!-- Recent Tasks -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Recent Tasks</h2>
+                        <a href="tasks.html" class="btn btn-sm btn-secondary">View All</a>
+                    </div>
+                    <div class="recent-list" id="recentTasks">
+                        <!-- Filled by dashboard.js -->
+                    </div>
                 </div>
-
-                <span>50%</span>
-              </div>
             </div>
+        </main>
 
-            <!-- Project Card 3 -->
-            <div class="project-card">
-              <h3>E-Commerce</h3>
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p class="footer-brand">Durgesh</p>
+        <p>Project Management SaaS - Frontend demo</p>
+    </footer>
 
-              <p>Online shopping management system.</p>
-
-              <div class="progress-container">
-                <div class="progress-bar">
-                  <div class="progress progress-30"></div>
-                </div>
-
-                <span>30%</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- =========================
-                 RECENT TASKS
-                 ========================= -->
-
-        <section class="tasks-section">
-          <div class="section-header">
-            <h2>Recent Tasks</h2>
-
-            <a href="#"> View All </a>
-          </div>
-
-          <div class="task-list">
-            <div class="task">
-              <div>
-                <h3>Design dashboard</h3>
-                <p>Task Management</p>
-              </div>
-
-              <span class="status progress-status"> In Progress </span>
-            </div>
-
-            <div class="task">
-              <div>
-                <h3>Create login page</h3>
-                <p>Job Portal</p>
-              </div>
-
-              <span class="status completed-status"> Completed </span>
-            </div>
-
-            <div class="task">
-              <div>
-                <h3>Connect MongoDB</h3>
-                <p>Job Portal</p>
-              </div>
-
-              <span class="status todo-status"> Todo </span>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-  </body>
+    <!-- Scripts: data.js and storage.js first, then page-specific JS -->
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
 </html>

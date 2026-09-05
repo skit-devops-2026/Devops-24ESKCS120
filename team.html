@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durgesh - Team</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <div class="navbar-brand">
+            <h2>Durgesh</h2>
+            <p>Project Management</p>
+        </div>
+        <nav class="navbar-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="projects.html">Projects</a>
+            <a href="tasks.html">Tasks</a>
+            <a href="board.html">Board</a>
+            <a href="team.html" class="active">Team</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+        <button class="logout-btn" onclick="alert('Logout is not implemented in this frontend demo.')">Logout</button>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1>Team</h1>
+                    <p>Meet the team members working on your projects</p>
+                </div>
+            </div>
+
+            <!-- Team member cards are rendered here by team.js -->
+            <div class="team-grid" id="teamGrid">
+            </div>
+        </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p class="footer-brand">Durgesh</p>
+        <p>Project Management SaaS - Frontend demo</p>
+        
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/team.js"></script>
+</body>
+</html>

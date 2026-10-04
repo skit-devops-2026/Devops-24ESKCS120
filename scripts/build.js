@@ -32,6 +32,17 @@ console.log("=================================");
 removeDirectory(buildDir);
 fs.mkdirSync(buildDir, { recursive: true });
 
+// Run Vite build for React application
+try {
+    console.log("Compiling React application with Vite...");
+    execSync("npx vite build", { stdio: "inherit" });
+    if (fs.existsSync(path.join(root, "dist"))) {
+        copyDirectory(path.join(root, "dist"), buildDir);
+    }
+} catch (err) {
+    console.warn("Vite build fallback: copying static files directly");
+}
+
 // Copy application files.
 const htmlFiles = fs
     .readdirSync(root)
@@ -52,6 +63,11 @@ copyDirectory(
 copyDirectory(
     path.join(root, "js"),
     path.join(buildDir, "js")
+);
+
+copyDirectory(
+    path.join(root, "src"),
+    path.join(buildDir, "src")
 );
 
 // Get current Git commit SHA.

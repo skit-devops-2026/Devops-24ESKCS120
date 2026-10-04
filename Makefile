@@ -20,8 +20,8 @@ build:
 	node scripts/build.js
 
 run:
-	@echo "Starting Project Management SaaS..."
-	npx --yes http-server . -p 3000
+	@echo "Starting Project Management SaaS (React Dev Server)..."
+	npx vite --port 3000
 
 # Needed from M4 onwards
 docker-build:

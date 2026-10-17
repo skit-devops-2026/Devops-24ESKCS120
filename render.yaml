@@ -2,9 +2,9 @@ services:
   # ── TaskFlow Express API (Backend Service) ──────────────────────────────────
   - type: web
     name: taskflow-api-24eskcs120
-    runtime: node
+    env: node
     rootDir: backend
-    plan: starter # If using a paid web service, use 'starter'. If Render allows free web in your region/account, remove the plan line.
+    plan: free
     buildCommand: npm install
     startCommand: node src/server.js
     healthCheckPath: /api/health
@@ -29,9 +29,10 @@ services:
       - key: EMAIL_FROM
         value: noreply@taskflow.dev
 
-  # ── TaskFlow React 19 SPA (Frontend Service) ────────────────────────────────
-  - type: static
+  # ── TaskFlow React 19 SPA (Frontend Static Site) ───────────────────────────
+  - type: web
     name: taskflow-ui-24eskcs120
+    env: static
     rootDir: frontend
     buildCommand: npm install --legacy-peer-deps && npm run build
     staticPublishPath: dist

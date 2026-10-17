@@ -5,4 +5,4 @@ build/
 .env.*
 !.env.example
 coverage/
-build/
+k8s/kubeconfig

@@ -1,0 +1,15 @@
+node_modules
+dist
+build
+.git
+.github
+.env
+.env.*
+!.env.example
+docs
+monitoring
+k8s
+scripts
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

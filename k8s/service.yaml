@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: taskflow-mongodb
+  labels:
+    app: taskflow
+    tier: database
+spec:
+  type: ClusterIP
+  selector:
+    app: taskflow
+    tier: database
+  ports:
+    - port: 27017
+      targetPort: 27017
+      name: mongodb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taskflow-backend
+  labels:
+    app: taskflow
+    tier: backend
+spec:
+  type: ClusterIP
+  selector:
+    app: taskflow
+    tier: backend
+  ports:
+    - port: 5000
+      targetPort: 5000
+      name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: taskflow-frontend
+  labels:
+    app: taskflow
+    tier: frontend
+spec:
+  type: NodePort
+  selector:
+    app: taskflow
+    tier: frontend
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+      name: http

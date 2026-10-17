@@ -4,7 +4,7 @@ services:
     name: taskflow-api-24eskcs120
     runtime: node
     rootDir: backend
-    plan: free
+    plan: starter # If using a paid web service, use 'starter'. If Render allows free web in your region/account, remove the plan line.
     buildCommand: npm install
     startCommand: node src/server.js
     healthCheckPath: /api/health
@@ -30,11 +30,9 @@ services:
         value: noreply@taskflow.dev
 
   # ── TaskFlow React 19 SPA (Frontend Service) ────────────────────────────────
-  - type: web
+  - type: static
     name: taskflow-ui-24eskcs120
-    runtime: static
     rootDir: frontend
-    plan: free
     buildCommand: npm install --legacy-peer-deps && npm run build
     staticPublishPath: dist
     autoDeploy: true

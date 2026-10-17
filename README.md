@@ -338,3 +338,133 @@ DELETE /api/workspaces/:id/tasks/comments/:commentId
 | Real-time | Add `socket.io` to `server.js`; client subscribes to workspace room |
 | Audit logging | `Activity` model is already in place — extend event types |
 | DORA metrics | Query `Activity` events with type `task.done` filtered by project/time |
+
+---
+
+## DevOps MT2 Milestone: Modules 5 & 6 Documentation
+
+### 1. Overview and Architecture
+
+TaskFlow has been fully containerized and instrumented with production monitoring and infrastructure-as-code manifests:
+
+```
+                          ┌────────────────────────┐
+                          │   Client Web Browser   │
+                          └───────────┬────────────┘
+                                      │
+                         HTTP :3000   │  HTTP :5000 (API / Metrics)
+                                      ▼
+               ┌──────────────────────────────────────────────┐
+               │              Docker Network                  │
+               │                                              │
+               │   ┌──────────────────────────────────────┐   │
+               │   │ taskflow-frontend (Nginx 1.27 Alpine)│   │
+               │   │ - Serves React 19 SPA (HTML/JS/CSS)  │   │
+               │   │ - Proxies /api/* -> backend:5000     │   │
+               │   └──────────────────┬───────────────────┘   │
+               │                      │                       │
+               │                      ▼                       │
+               │   ┌──────────────────────────────────────┐   │
+               │   │ taskflow-backend (Node 20 Alpine)    │   │
+               │   │ - Express 5 REST API                 │   │
+               │   │ - Prometheus metrics (/metrics)      │   │
+               │   │ - Health check (/api/health)         │   │
+               │   └──────────┬─────────────────┬─────────┘   │
+               │              │                 │             │
+               │              ▼                 ▼             │
+               │   ┌────────────────┐     ┌───────────────┐   │
+               │   │ taskflow-mongo │     │  Prometheus   │   │
+               │   │ - Mongo 7.0    │     │  v2.54 Scraper│   │
+               │   └────────────────┘     └───────┬───────┘   │
+               │                                  │           │
+               │                                  ▼           │
+               │                          ┌───────────────┐   │
+               │                          │    Grafana    │   │
+               │                          │  v11 Dashboard│   │
+               │                          └───────────────┘   │
+               └──────────────────────────────────────────────┘
+```
+
+---
+
+### 2. Containerization (Module 5)
+
+#### Docker Multi-Stage Builds
+- **Frontend (`frontend/Dockerfile` & root `Dockerfile`)**: Multi-stage build using `node:20-alpine` builder with `npm ci --legacy-peer-deps`, producing optimized static assets served via a hardened `nginx:1.27-alpine` container with SPA fallback (`try_files`) and internal reverse proxying for `/api/`.
+- **Backend (`backend/Dockerfile`)**: Multi-stage build using `node:20-alpine`, installing minimal production dependencies (`--omit=dev`), executing under unprivileged `USER node` for non-root runtime security, with native health probes.
+- **Docker Compose (`docker-compose.yml`)**: Single-command orchestration for the complete multi-tier topology including `frontend`, `backend`, `mongodb`, `prometheus`, and `grafana`.
+
+#### Commands for Local Execution
+
+```bash
+# 1. Validate Compose syntax and service graph
+docker compose config
+
+# 2. Build and start full stack in detached mode
+docker compose up --build -d
+
+# 3. Check service health and running status
+docker compose ps
+
+# 4. View container logs
+docker compose logs -f --tail=100
+
+# 5. Stop and clean up containers
+docker compose down
+```
+
+#### Exposed Service Ports
+
+| Service | Container Port | Host Port | Description |
+|---------|----------------|-----------|-------------|
+| `taskflow-frontend` | 80 | `3000` | Web UI & Nginx Reverse Proxy |
+| `taskflow-backend` | 5000 | `5000` | Express REST API & Metrics |
+| `taskflow-mongodb` | 27017 | `127.0.0.1:27017` | Local development database |
+| `taskflow-prometheus` | 9090 | `9090` | Prometheus Scraper Web UI |
+| `taskflow-grafana` | 3000 | `3001` | Grafana Monitoring Dashboard |
+
+---
+
+### 3. Monitoring & Observability (Module 6)
+
+#### Metrics Exposition (`GET /metrics`)
+TaskFlow backend is instrumented with `prom-client` exposing Prometheus-compatible metrics in standard exposition format:
+- `taskflow_http_requests_total`: Counter tracking total processed HTTP requests labeled by `method`, `route`, and `status_code` (route IDs are strictly normalized to prevent high cardinality).
+- `taskflow_http_request_duration_seconds`: Histogram measuring latency distribution with standard second-based buckets (`[0.005, ..., 10]`).
+- `taskflow_http_requests_in_progress`: Gauge tracking active in-flight requests.
+- `taskflow_nodejs_*`: Process runtime metrics (heap memory, event loop handles, GC durations).
+
+#### Prometheus Configuration (`monitoring/prometheus.yml`)
+- Scrapes Prometheus self-metrics (`127.0.0.1:9090`).
+- Scrapes TaskFlow backend metrics (`backend:5000/metrics`) at 5s intervals.
+
+#### Grafana Provisioning (`monitoring/grafana/`)
+- Datasource auto-provisioned to Prometheus (`http://prometheus:9090`).
+- Dashboard auto-provisioned from `monitoring/grafana/dashboards/taskflow-dashboard.json`:
+  1. **Backend Service Availability** (`up{job="taskflow-backend"}`)
+  2. **In-Flight Requests** (`sum(taskflow_http_requests_in_progress)`)
+  3. **Total Requests Processed** (`sum(taskflow_http_requests_total)`)
+  4. **Memory Heap Used** (`taskflow_nodejs_heap_size_used_bytes`)
+  5. **Request Rate by Route** (`sum(rate(taskflow_http_requests_total[1m])) by (method, route)`)
+  6. **HTTP 5xx Error Rate (%)** (`sum(rate(taskflow_http_requests_total{status_code=~"5.."}[1m]))`)
+  7. **Latency Quantiles p50 & p95** (`histogram_quantile(0.95/0.50, ...)`)
+  8. **Status Code Distribution** (`increase(taskflow_http_requests_total[5m])`)
+
+---
+
+### 4. Cloud Deployment (Render Blueprint)
+
+The repository provides `render.yaml` for 1-click cloud deployment:
+- **Backend Service (`taskflow-api-24eskcs120`)**: Node web service running `npm install && node src/server.js` with health check probe at `/api/health`.
+- **Frontend Service (`taskflow-ui-24eskcs120`)**: Static web service running `npm install --legacy-peer-deps && npm run build` with rewrite rule `/* -> /index.html`.
+- **Environment Configuration**: Configured securely outside Git; secrets (`JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`) auto-generated by platform.
+
+---
+
+### 5. Verification & Evidence Artifacts
+
+The following genuine evidence files are committed under `docs/`:
+- [`docs/deployment.png`](file:///docs/deployment.png): Live TaskFlow application UI running in the browser.
+- [`docs/health-check.png`](file:///docs/health-check.png): Live `/api/health` endpoint responding with JSON status and database connectivity.
+- [`docs/monitoring-dashboard.png`](file:///docs/monitoring-dashboard.png): Live `/metrics` exposition format output.
+- [`docs/monitoring-metrics.png`](file:///docs/monitoring-metrics.png): Captured Prometheus metrics stream.

@@ -5,9 +5,12 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import mongoose from 'mongoose';
+import dns from 'dns';
 
 import connectDB from './config/db.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { metricsMiddleware, metricsHandler } from './middleware/metrics.js';
 
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
@@ -15,14 +18,29 @@ import workspaceRoutes from './routes/workspaces.js';
 import teamRoutes from './routes/teams.js';
 import projectRoutes from './routes/projects.js';
 import taskRoutes from './routes/tasks.js';
-import dns from 'dns';
-dns.setServers(["1.1.1.1","8.8.8.8"]);
+
+// Fallback DNS servers for environments with restricted DNS resolution
+try {
+  dns.setServers(['1.1.1.1', '8.8.8.8']);
+} catch {
+  // Ignore DNS override errors in environments that do not support custom servers
+}
+
 const app = express();
+
+// ── Metrics Middleware ─────────────────────────────────────────────────────────
+app.use(metricsMiddleware);
 
 // ── Security ───────────────────────────────────────────────────────────────────
 app.use(helmet());
 
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 500, standardHeaders: true, legacyHeaders: false });
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 500,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skip: (req) => req.path === '/api/health' || req.path === '/metrics',
+});
 app.use(limiter);
 
 // ── CORS ───────────────────────────────────────────────────────────────────────
@@ -42,10 +60,18 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
 }
 
-// ── Health check ───────────────────────────────────────────────────────────────
+// ── Health check & Metrics ─────────────────────────────────────────────────────
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'TaskFlow API is healthy', timestamp: new Date().toISOString() });
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'connecting';
+  res.json({
+    success: true,
+    message: 'TaskFlow API is healthy',
+    database: dbStatus,
+    timestamp: new Date().toISOString(),
+  });
 });
+
+app.get('/metrics', metricsHandler);
 
 // ── Routes ─────────────────────────────────────────────────────────────────────
 app.use('/api/auth', authRoutes);
@@ -65,11 +91,12 @@ app.use(errorHandler);
 
 // ── Start ──────────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0';
 
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`🚀 TaskFlow API running on http://localhost:${PORT}`);
-  });
+app.listen(PORT, HOST, () => {
+  console.log(`🚀 TaskFlow API running on http://${HOST}:${PORT}`);
 });
+
+connectDB();
 
 export default app;

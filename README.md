@@ -394,6 +394,17 @@ TaskFlow has been fully containerized and instrumented with production monitorin
 - **Backend (`backend/Dockerfile`)**: Multi-stage build using `node:20-alpine`, installing minimal production dependencies (`--omit=dev`), executing under unprivileged `USER node` for non-root runtime security, with native health probes.
 - **Docker Compose (`docker-compose.yml`)**: Single-command orchestration for the complete multi-tier topology including `frontend`, `backend`, `mongodb`, `prometheus`, and `grafana`.
 
+#### Container Registry Images
+The multi-tier container images are automatically built, validated, and pushed to the container registry via the automated CI pipeline:
+- **Backend Service Image**:
+  - GitHub Container Registry (GHCR): `ghcr.io/skit-devops-2026/devops-24eskcs120-backend:latest`
+  - Docker Hub: `durgesharma1208/taskflow-backend:latest`
+- **Frontend Web UI Image**:
+  - GitHub Container Registry (GHCR): `ghcr.io/skit-devops-2026/devops-24eskcs120-frontend:latest`
+  - Docker Hub: `durgesharma1208/taskflow-frontend:latest`
+- **Full-Stack Application Image**:
+  - GitHub Container Registry (GHCR): `ghcr.io/skit-devops-2026/devops-24eskcs120:latest`
+
 #### Commands for Local Execution
 
 ```bash

@@ -468,3 +468,46 @@ The following genuine evidence files are committed under `docs/`:
 - [`docs/health-check.png`](file:///docs/health-check.png): Live `/api/health` endpoint responding with JSON status and database connectivity.
 - [`docs/monitoring-dashboard.png`](file:///docs/monitoring-dashboard.png): Live `/metrics` exposition format output.
 - [`docs/monitoring-metrics.png`](file:///docs/monitoring-metrics.png): Captured Prometheus metrics stream.
+- [`docs/kubernetes-pods.png`](file:///docs/kubernetes-pods.png): Verified cluster Pod status showing TaskFlow Pods running and ready.
+
+---
+
+### 6. Kubernetes Orchestration (Module 7)
+
+#### Manifest Architecture
+The Kubernetes manifests are version-controlled under `k8s/`:
+- **[`k8s/deployment.yaml`](file:///k8s/deployment.yaml)**: Full-stack application deployments:
+  - `taskflow-mongodb`: Dedicated MongoDB instance with persistent volume mount.
+  - `taskflow-backend`: Express REST API running `durgesharma1208/taskflow-backend:latest` with HTTP health probes (`/api/health`) on port 5000, connected to `mongodb://taskflow-mongodb:27017/taskflow`.
+  - `taskflow-frontend`: React 19 production Nginx web server running `durgesharma1208/taskflow-frontend:latest` with HTTP readiness/liveness probes on port 80.
+- **[`k8s/service.yaml`](file:///k8s/service.yaml)**: Service discovery definitions:
+  - `taskflow-mongodb`: `ClusterIP` on port 27017.
+  - `taskflow-backend`: `ClusterIP` on port 5000.
+  - `taskflow-frontend`: `NodePort` on port 80 (`nodePort: 30080`).
+- **[`k8s/kind-config.yaml`](file:///k8s/kind-config.yaml)**: Cluster topology mapping container port 30080 to host port 30080.
+
+#### Cluster Deployment Instructions
+
+```bash
+# 1. Create dedicated kind cluster
+kind create cluster --config k8s/kind-config.yaml
+
+# 2. Verify cluster nodes
+kubectl get nodes
+
+# 3. Apply Kubernetes manifests
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+
+# 4. Monitor rollout status
+kubectl rollout status deployment/taskflow-backend
+kubectl rollout status deployment/taskflow-frontend
+
+# 5. Inspect deployed Pods and Services
+kubectl get pods -o wide
+kubectl get services
+
+# 6. Verify health endpoint through port-forward or NodePort
+kubectl port-forward svc/taskflow-backend 5000:5000
+curl http://localhost:5000/api/health
+```

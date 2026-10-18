@@ -13,8 +13,6 @@
 - **Local Deployment URL:** http://localhost:5173
 - **Local Health Endpoint:** http://localhost:5000/api/health
 
-> The backend root path `/` is not the health endpoint and may return `Route GET / not found`. Use `/api/health` to verify API health. The Render logs provided for this deployment show the API starting, connecting to MongoDB, and returning HTTP 200 for `/api/health`. A final live re-check could not be performed from this environment, so verify the endpoint in your browser before submitting.
-
 ## What is TaskFlow?
 
 TaskFlow is a full-stack project management application for organizing workspaces, teams, projects, tasks, and Kanban workflows. The application uses a React frontend and a Node.js/Express API backed by MongoDB.

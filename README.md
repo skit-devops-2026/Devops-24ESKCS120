@@ -4,13 +4,14 @@
 |---|---|---|
 | 24ESKCS120 | Durgesh Sharma | [durgesharma1208](https://github.com/durgesharma1208) |
 
-## Live Deployment
+
+## Live URL
 
 - **Production Live URL:** https://taskflow-ui-24eskcs120.onrender.com
-- **Frontend registration page:** https://taskflow-ui-24eskcs120.onrender.com/register
 - **Production Health Endpoint:** https://taskflow-api-24eskcs120.onrender.com/api/health
-- **Backend API base URL:** https://taskflow-api-24eskcs120.onrender.com
-- **Source repository:** https://github.com/skit-devops-2026/Devops-24ESKCS120
+- **Backend API Base URL:** https://taskflow-api-24eskcs120.onrender.com
+- **Local Deployment URL:** http://localhost:5173
+- **Local Health Endpoint:** http://localhost:5000/api/health
 
 > The backend root path `/` is not the health endpoint and may return `Route GET / not found`. Use `/api/health` to verify API health. The Render logs provided for this deployment show the API starting, connecting to MongoDB, and returning HTTP 200 for `/api/health`. A final live re-check could not be performed from this environment, so verify the endpoint in your browser before submitting.
 
